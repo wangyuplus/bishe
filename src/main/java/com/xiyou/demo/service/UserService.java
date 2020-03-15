@@ -10,6 +10,7 @@ import com.xiyou.demo.model.User;
 import com.xiyou.demo.utils.footMapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ import java.util.UUID;
  * 3 * @Date: 2019/7/16 18:52
  * 4
  */
+@CacheConfig(cacheNames = "user", cacheManager = "cacheManager")
 @Service
 public class UserService {
     @Autowired

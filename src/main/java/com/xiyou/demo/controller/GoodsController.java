@@ -33,11 +33,18 @@ public class GoodsController {
         goodsService.addGoods(goods);
         return "添加成功";
     }
-    //浏览全部
+
+    @RequestMapping(value = "/getGoodsByType",method ={RequestMethod.GET})
+    @ResponseBody
+    public List<GoodsVO> getGoodsByType(@RequestParam("type") String type,@RequestParam("page") Integer page){
+
+        return goodsService.getGoodsByType(type,page);
+    }
+    //浏览全部 主页 未登录
     @RequestMapping(value = "/getGoods",method ={RequestMethod.GET})
     @ResponseBody
-    public List<GoodsVO> getGoods(){
-       return goodsService.getGoods();
+    public List<GoodsVO> getGoods(@RequestParam("page") Integer page){
+        return goodsService.getGoods(page);
     }
     /**
      * 信息的修改(根据gid),
@@ -57,7 +64,7 @@ public class GoodsController {
      */
     @RequestMapping("/findGoodsByUid")
     @ResponseBody
-    public List<Goods> findGoodsByUid(@CookieValue("token") String token){
+    public List<Goods> findGoodsByUid( @CookieValue("token") String token){
         try {
             int uid=userService.findUserByTokens(token).getUid();
             System.out.println(uid);

@@ -2,8 +2,12 @@ package com.xiyou.demo.service;
 
 import com.xiyou.demo.dao.ShoppingDao;
 import com.xiyou.demo.model.Shopping;
+import com.xiyou.demo.model.ShoppingVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: wangyu
@@ -21,5 +25,21 @@ public class ShoppingService {
     }
     public void deleteGid(Integer gid){
         shoppingDao.deleteGid(gid);
+    }
+
+    public List<ShoppingVO> getshop(String username) {
+        return shoppingDao.getshop(username);
+    }
+
+    public void updateStatusByUsername(String username) {
+        shoppingDao.updateStatusByUsername(username);
+    }
+
+    public List<Integer> getGid(String username) {
+        return shoppingDao.getGid(username);
+    }
+
+    public int getSumByGid(int  gid,String username) {
+        return shoppingDao.getSumByGid(gid,username);
     }
 }

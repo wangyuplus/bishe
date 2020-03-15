@@ -16,12 +16,12 @@ import java.util.List;
 public interface GoodsDao {
     @Insert("insert into goods (uid,name,price,path,beizhu,sum,type) values (#{uid},#{name},#{price},#{path},#{beizhu},#{sum},#{type})")
     void addGoods(Goods goods);
-    @Select("select gid,goods.uid,name,price,path,beizhu,vx,qq,phone,sum,type from goods inner join user where goods.uid=user.uid")
-    List<GoodsVO> getGoods();
-    @Delete("delete from goods where name=#{name}")
+    @Select("select gid,goods.uid,name,price,path,beizhu,vx,qq,phone,sum,type from goods inner join user where goods.uid=user.uid limit ${10*(page-1)},10")
+    List<GoodsVO> getGoods(Integer page);
+    @Delete("delete from goods where gid=#{did}")
     void deleteGoods();
-    @Update("update  from goods set sum=(sum-#{sum2}) where name=#{name}")
-    void updateGoodsSum();
+    @Update("update  goods set sum=(sum-${sum2}) where gid=#{gid}")
+    void updateGoodsSum(@Param("sum2") Integer sum2,@Param("gid") Integer gid);
 
     @Select("select max(gid) from goods")
     int findMaxId();
@@ -35,4 +35,7 @@ public interface GoodsDao {
     List<Goods> findGoodsByUid(int uid);
     @Delete("delete from goods where gid=#{gid}")
     void  deleteGoodsById(int gid);
+
+    @Select("select gid,goods.uid,name,price,path,beizhu,vx,qq,phone,sum,type from goods inner join user where goods.uid=user.uid and type=#{type} limit ${10*(page-1)},10")
+    List<GoodsVO> getGoodsByType(@Param("type") String type, @Param("page") Integer page);
 }
