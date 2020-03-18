@@ -38,4 +38,6 @@ public interface GoodsDao {
 
     @Select("select gid,goods.uid,name,price,path,beizhu,vx,qq,phone,sum,type from goods inner join user where goods.uid=user.uid and type=#{type} limit ${10*(page-1)},10")
     List<GoodsVO> getGoodsByType(@Param("type") String type, @Param("page") Integer page);
+    @Select("select * from goods where gid=#{id}")
+    Goods getGoodsById(Integer id);
 }

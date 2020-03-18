@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -26,7 +28,9 @@ public class GoodsController {
     GoodsService goodsService;
     //添加
     @RequestMapping(value = "/addGoods",method ={RequestMethod.POST})
-    public String addGoods(@RequestBody Goods goods, @CookieValue("token") String token){
+    public String addGoods(@RequestBody Goods goods, @CookieValue("token") String token, HttpServletResponse response, HttpServletRequest request){
+        response.setHeader("Access-Control-Allow-Origin",request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Credentials","true");
         User user= userService.findUserByTokens(token);
         Integer uid=user.getUid();
         goods.setUid(uid);
@@ -62,9 +66,11 @@ public class GoodsController {
     /**
      * 查看自己发布的
      */
-    @RequestMapping("/findGoodsByUid")
+    @RequestMapping("/findMyGoods")
     @ResponseBody
-    public List<Goods> findGoodsByUid( @CookieValue("token") String token){
+    public List<Goods> findGoodsByUid(@CookieValue("token") String token,HttpServletResponse response, HttpServletRequest request){
+        response.setHeader("Access-Control-Allow-Origin",request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Credentials","true");
         try {
             int uid=userService.findUserByTokens(token).getUid();
             System.out.println(uid);
@@ -88,5 +94,12 @@ public class GoodsController {
         catch (Exception e){
             return new Response(1,"error");
         }
+    }
+    /**
+     * 根据gid查看商品详情
+     */
+    @RequestMapping("/getGoodsById")
+    public Goods getGoodsById(Integer id){
+       return goodsService.getGoodsById(id);
     }
 }

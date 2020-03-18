@@ -85,9 +85,7 @@ public class UploadController {
     //根据gid获取path
     @RequestMapping("getPath")
     public String aa(int gid) {
-
         String path = goodsService.findPathByGid(gid);
-
         return path;
     }
 

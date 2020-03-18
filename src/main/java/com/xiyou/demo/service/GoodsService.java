@@ -62,4 +62,8 @@ public class GoodsService {
     public void updateGoodsSum(Integer gid, int sum) {
         goodsDao.updateGoodsSum(sum,gid);
     }
+
+    public Goods getGoodsById(Integer id) {
+      return   goodsDao.getGoodsById(id);
+    }
 }

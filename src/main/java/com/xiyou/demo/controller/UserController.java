@@ -40,7 +40,9 @@ public class UserController {
      */
     //9aec
     @RequestMapping(path = {"/getCode"},method = {RequestMethod.GET})
-    public Response getCode(String email) {
+    public Response getCode(String email, HttpServletResponse response, HttpServletRequest request){
+        response.setHeader("Access-Control-Allow-Origin",request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Credentials","true");
         Email email1=emailService.findByEmail(email);
         if (email1!=null){
             return  new Response(1, "此邮箱已注册");
@@ -57,7 +59,9 @@ public class UserController {
      * 注册
      **/
     @RequestMapping(path = {"/reg"},method = {RequestMethod.POST})
-    public Response userRegister(@RequestBody String jsonStr){
+    public Response userRegister(@RequestBody String jsonStr, HttpServletResponse response, HttpServletRequest request){
+        response.setHeader("Access-Control-Allow-Origin",request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Credentials","true");
         try {
             Map<String,String> map=userService.userRegister(jsonStr);
             if (map.get("msg").equals("注册成功")) {
@@ -76,6 +80,8 @@ public class UserController {
      */
     @RequestMapping(path = {"/login"},method = {RequestMethod.GET})
     public Response userLogin(@RequestParam("username") String username, @RequestParam("password") String password, HttpServletResponse response, HttpServletRequest request){
+        response.setHeader("Access-Control-Allow-Origin",request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Credentials","true");
         try {
             Map<String, String> map = userService.userLogin(username, password);
             String tokens = map.get("tokens");
@@ -100,7 +106,9 @@ public class UserController {
      * 根据token查找用户
      **/
     @RequestMapping(path = {"/getUserByToken"},method = {RequestMethod.GET})
-    public ResponseUser getUserByTokens(@RequestParam("token") String token){
+    public ResponseUser getUserByTokens(@RequestParam("token") String token, HttpServletResponse response, HttpServletRequest request){
+        response.setHeader("Access-Control-Allow-Origin",request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Credentials","true");
         try {
             User user= userService.findUserByTokens(token);
             if(user==null){
@@ -120,7 +128,9 @@ public class UserController {
      * 根据uid查找用户
      **/
     @RequestMapping(path = {"/getUserById"},method = {RequestMethod.GET})
-    public ResponseUser getUserByUId(@RequestParam("uid") Integer uid){
+    public ResponseUser getUserByUId(@RequestParam("uid") Integer uid, HttpServletResponse response, HttpServletRequest request){
+        response.setHeader("Access-Control-Allow-Origin",request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Credentials","true");
         try {
             User user=userService.findUserByUid(uid);
             if(user==null){
@@ -175,9 +185,9 @@ public class UserController {
      */
     @RequestMapping(path = "/getTokens", method = {RequestMethod.GET})
     @ResponseBody
-    public void gettoken(@CookieValue("token") String token,HttpServletRequest request) {
-
-        System.out.println(token);
+    public void gettoken(@CookieValue("token") String token, HttpServletResponse response, HttpServletRequest request){
+        response.setHeader("Access-Control-Allow-Origin",request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Credentials","true");
     }
     /**
      * 根据账号获取丢失密码，发送到注册邮箱
@@ -202,7 +212,9 @@ public class UserController {
      */
     @RequestMapping(value = "/updateUser",method = {RequestMethod.POST})
     @ResponseBody
-    public Response updateUser(@RequestBody User user){
+    public Response updateUser(@RequestBody User user, HttpServletResponse response, HttpServletRequest request){
+        response.setHeader("Access-Control-Allow-Origin",request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Credentials","true");
         try {
             userService.updateUser(user);
             return new Response(1,"修改成功");
@@ -216,7 +228,9 @@ public class UserController {
      */
     @RequestMapping(value = "/findUser",method = {RequestMethod.GET})
     @ResponseBody
-    public User findUser(@RequestParam("username") String username){
+    public User findUser(@RequestParam("username") String username, HttpServletResponse response, HttpServletRequest request){
+        response.setHeader("Access-Control-Allow-Origin",request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Credentials","true");
         try {
             return userService.findUserByUsername(username);
         }catch (Exception e){

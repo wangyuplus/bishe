@@ -23,8 +23,8 @@ public class ShoppingService {
     public void updateStatus(Integer gid){
         shoppingDao.updateStatus(gid);
     }
-    public void deleteGid(Integer gid){
-        shoppingDao.deleteGid(gid);
+    public void deleteGid(Integer gid,String username){
+        shoppingDao.deleteGid(gid,username);
     }
 
     public List<ShoppingVO> getshop(String username) {
@@ -41,5 +41,9 @@ public class ShoppingService {
 
     public int getSumByGid(int  gid,String username) {
         return shoppingDao.getSumByGid(gid,username);
+    }
+
+    public void updateShopping(Integer sum, Integer gid, String username) {
+        shoppingDao.updateShopping(sum,gid,username);
     }
 }
