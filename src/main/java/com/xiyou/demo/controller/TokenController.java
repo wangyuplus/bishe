@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @RestController
 @CrossOrigin
+@RequestMapping(path = "/api")
 public class TokenController {
     private static final Logger logger = LoggerFactory.getLogger(TokenController.class);
 

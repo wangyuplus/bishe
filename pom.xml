@@ -13,6 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>bishe</name>
     <description>Demo project for Spring Boot</description>
+    <packaging>jar</packaging>
 
     <properties>
         <java.version>1.8</java.version>
@@ -77,6 +78,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
+
     </dependencies>
 
     <build>

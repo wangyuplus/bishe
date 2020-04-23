@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 @Repository(value = "userDao")
 public interface UserDao {
 
-    @Insert("insert into user (username,password,salt,status) values (#{username},#{password},#{salt},#{status})")
+    @Insert("insert into user (username,password,salt) values (#{username},#{password},#{salt})")
     void insertUser(User user);
 
     @Select("select * from user where username =#{username}")
@@ -23,6 +23,6 @@ public interface UserDao {
 
     @Select("select * from user where uid =#{uid}")
     User findUserById(@Param("uid") Integer uid);
-    @Update("update user set status=#{status},password=#{password},vx=#{vx},qq=#{qq},phone=#{phone} where username=#{username}")
+    @Update("update user set password=#{password},vx=#{vx},qq=#{qq},phone=#{phone} where username=#{username}")
     void updateUser(User user);
 }

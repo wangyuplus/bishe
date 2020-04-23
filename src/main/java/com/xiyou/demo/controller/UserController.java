@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
@@ -26,6 +27,7 @@ import java.util.Map;
  */
 @RestController
 @CrossOrigin
+@RequestMapping(path = "/api")
 public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
@@ -38,7 +40,6 @@ public class UserController {
     /**
      * 根据邮箱获取验证码
      */
-    //9aec
     @RequestMapping(path = {"/getCode"},method = {RequestMethod.GET})
     public Response getCode(String email, HttpServletResponse response, HttpServletRequest request){
         response.setHeader("Access-Control-Allow-Origin",request.getHeader("Origin"));
@@ -84,6 +85,7 @@ public class UserController {
         response.setHeader("Access-Control-Allow-Credentials","true");
         try {
             Map<String, String> map = userService.userLogin(username, password);
+            HttpSession session =request.getSession();
             String tokens = map.get("tokens");
             if (tokens == null) {
                 return new Response(1, map.get("msg"));
@@ -94,6 +96,9 @@ public class UserController {
             response.addCookie(cookie);
             logger.info("登录成功");
             User user = userService.findUserByUsername(username);
+            session.setAttribute("user",user);
+            User user1 = (User) session.getAttribute("user");
+            System.out.println(user);
             user.setStatus(1);
             userService.updateUser(user);
             return new Response(0, "登录成功", username,1);
@@ -151,23 +156,11 @@ public class UserController {
      * @param
      * @return
      */
-//    @RequestMapping(path = "/logout", method = {RequestMethod.GET})
-//    @ResponseBody
-//    public Response userLogout(@CookieValue("token") String token) {
-//        try {
-//            userService.logout(token);
-//            User user= userService.findUserByTokens(token);
-//            user.setStatus(1);
-//            userService.updateUser(user);
-//            return new Response(0, "退出成功","object",0);
-//        } catch (Exception e) {
-//            logger.error("userLogout:" , e);
-//            return new Response(1, "退出失败");
-//        }
-//    }
     @RequestMapping(path = "/logout", method = {RequestMethod.GET})
     @ResponseBody
-    public Response userLogout(@RequestParam("username") String username) {
+    public Response userLogout(@RequestParam("username") String username,HttpServletResponse response, HttpServletRequest request){
+        response.setHeader("Access-Control-Allow-Origin",request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Credentials","true");
         try {
             User user = userService.findUserByUsername(username);
             user.setStatus(0);
@@ -194,7 +187,9 @@ public class UserController {
      */
     @RequestMapping(path = "/findPassword",method = {RequestMethod.GET})
     @ResponseBody
-    public Response findPassword(@RequestParam("username") String username){
+    public Response findPassword(@RequestParam("username") String username,HttpServletResponse response, HttpServletRequest request){
+        response.setHeader("Access-Control-Allow-Origin",request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Credentials","true");
         User user=userService.findUserByUsername(username);
         Integer uid=user.getUid();
         Email email = emailService.findByUid(uid);
@@ -208,7 +203,7 @@ public class UserController {
 
     }
     /**
-     * 用户根据账号修改个人资料(密码,vx,qq,phone)
+     * 用户修改个人资料(密码,vx,qq,phone)
      */
     @RequestMapping(value = "/updateUser",method = {RequestMethod.POST})
     @ResponseBody

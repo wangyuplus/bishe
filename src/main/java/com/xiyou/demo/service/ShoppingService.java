@@ -43,7 +43,15 @@ public class ShoppingService {
         return shoppingDao.getSumByGid(gid,username);
     }
 
-    public void updateShopping(Integer sum, Integer gid, String username) {
-        shoppingDao.updateShopping(sum,gid,username);
+    public void updateShopping(Integer gid, String username) {
+        shoppingDao.updateShopping(gid,username);
+    }
+
+    public void reduceShopping(int gid, String username) {
+        shoppingDao.reduceShopping(gid,username);
+    }
+
+    public void updateShoppingSum(int gid, int sum, String username) {
+        shoppingDao.updateShoppingSum(gid,sum,username);
     }
 }

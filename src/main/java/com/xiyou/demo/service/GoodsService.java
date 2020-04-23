@@ -15,33 +15,20 @@ import java.util.List;
  * @Author: wangyu
  * @Date: 2020/1/28 14:36
  */
-@CacheConfig(cacheNames = "goods", cacheManager = "cacheManager")
+//@CacheConfig(cacheNames = "goods", cacheManager = "cacheManager")
 @Service
 public class GoodsService {
     @Autowired
     GoodsDao goodsDao;
-    //添加物品
     public void addGoods(Goods goods){
     goodsDao.addGoods(goods);
     }
 
-    @Cacheable()
+
     public List<GoodsVO> getGoods(Integer page) {
         return goodsDao.getGoods(page);
     }
 
-    //只添加图片
-    public void addPath(String path){
-        goodsDao.addPath(path);
-    }
-    //查找最大gid
-    public int findMaxId(){
-        return goodsDao.findMaxId();
-    }
-    //根据gid查找path
-    public String findPathByGid(int gid){
-        return goodsDao.findPath(gid);
-    }
 
     public void updateGoodsById(Goods goods) {
         goodsDao.updateGoodsById(goods);
@@ -55,9 +42,6 @@ public class GoodsService {
         goodsDao.deleteGoodsById(gid);
     }
 
-    public List<GoodsVO> getGoodsByType(@Param("type") String type, @Param("page") Integer page) {
-        return goodsDao.getGoodsByType(type,page);
-    }
 
     public void updateGoodsSum(Integer gid, int sum) {
         goodsDao.updateGoodsSum(sum,gid);
@@ -65,5 +49,13 @@ public class GoodsService {
 
     public Goods getGoodsById(Integer id) {
       return   goodsDao.getGoodsById(id);
+    }
+
+    public List<String> getGoodsType() {
+        return goodsDao.getGoodsType();
+    }
+
+    public List<GoodsVO> getGoodsByType(String type) {
+        return goodsDao.getGoodsByType(type);
     }
 }

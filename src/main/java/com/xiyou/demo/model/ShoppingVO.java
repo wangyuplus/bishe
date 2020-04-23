@@ -12,7 +12,9 @@ public class ShoppingVO {
     String name;//物品名字
     String type;//类型
     String price;//价格
-    int sum;//物品数量
+    String path;//图片名字
+    int shoppingsum;//购物车商品数量
+    int goodssum;//仓库商品数量
     int status;//状态 0未支付 1已支付
 
 }

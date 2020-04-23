@@ -31,7 +31,7 @@ public interface ShoppingDao {
     @Delete("delete from shopping where gid=#{gid} and username=#{username}")
     void deleteGid(@Param("gid") Integer gid,@Param("username") String username);
 
-    @Select("select shopping.gid,name,type,price,shopping.sum,status from shopping inner join goods where shopping.gid=goods.gid and username=#{username}")
+    @Select("select shopping.gid,name,type,price,shopping.sum as shoppingsum,goods.sum as goodssum,goods.path,status from shopping left join goods on shopping.gid=goods.gid where shopping.username=#{username}")
     List<ShoppingVO> getshop(String username);
 
     @Update("update  shopping set status=1 where username=#{username}")
@@ -42,6 +42,13 @@ public interface ShoppingDao {
 
     @Select("select sum from shopping where gid=#{gid} and username=#{username}")
     int getSumByGid(@Param("gid") int gid,@Param("username") String username);
+
+    @Update("update  shopping set sum=sum+1 where gid=#{gid} and username =#{username}")
+    void updateShopping(@Param("gid") Integer gid, @Param("username") String username);
+
+    @Update("update  shopping set sum=sum-1 where gid=#{gid} and username =#{username}")
+    void reduceShopping(@Param("gid")int gid,@Param("username") String username);
+
     @Update("update  shopping set sum=#{sum} where gid=#{gid} and username =#{username}")
-    void updateShopping(@Param("sum") Integer sum, @Param("gid") Integer gid, @Param("username") String username);
+    void updateShoppingSum(@Param("gid") int gid, @Param("sum") int sum, @Param("username") String username);
 }
